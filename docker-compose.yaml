@@ -1,0 +1,24 @@
+# Iremos criar o dockerCompose para iniciar a aplicação
+version: '3.8'
+
+services:
+  # Aplicação
+  app:
+    build: . # build da imagem (pasta atual - Dockerfile)
+    ports:
+      - 3000:3000 # porta do container:porta da maquina
+    volumes:
+      - .:/home/node/app # mapeamento de volume
+    depends_on:
+      - db # dependencia do container, que irá iniciar primeiro antes
+        # de iniciar o container app
+
+  # Banco de dados
+  db: # nome do sevicço = nome do comteiner
+    image: bitnami/postgresql:latest # imagem do container
+    environment: # variaveis de ambiente
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=apisolidfullclicle
+    ports: # porta do container
+      - 5432:5432
